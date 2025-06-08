@@ -2,8 +2,6 @@ if (process.env.NODE_ENV != "production") {
   require("dotenv").config();
 };
 
-// console.log(process.env.SECRET)
-
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -58,17 +56,16 @@ store.on("error", () => {
 
 const sessionOptions = {
   store,
-  secret : process.env.SECRET,
-  resave : false,
-  saveUninitialized : true,
-  cookie : {
-    expires : Date.now() + 7 * 24 * 60 * 60 * 1000,
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000,
-    httpOnly : true,
+    httpOnly: true,
   },
 };
 
-// ✅ Added root route
 app.get("/", (req, res) => {
   res.render("home");
 });
@@ -100,26 +97,17 @@ const validateReview = (req, res, next) => {
   }
 };
 
-// app.get("/demouser", async (req, res) => {
-//   let fakeUser = new User({
-//     email : "studentemail@gmail.com",
-//     username : "Delta-Student",
-//   });
-//   let registeredUser = await User.register(fakeUser, "ashutosh");
-//   res.send(registeredUser);
-// });
-
-// ✅ Uncommented 404 handler
-app.all("*", (req, res, next) => {
-  next(new ExpressError(404, "Page not found"));
-});
-
 // Routes
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 
-// ✅ Fixed error render path
+// ✅ Added clean 404 handler using your existing error.ejs
+app.all("*", (req, res) => {
+  res.status(404).render("listings/error", { message: "Page not found" });
+});
+
+// ✅ Existing error middleware remains the same
 app.use((err, req, res, next) => {
   const { statusCode = 500, message = "Something went wrong!!!" } = err;
   res.status(statusCode).render("listings/error", { message });
