@@ -1,0 +1,46 @@
+<% layout("./layouts/boilerplate") %>
+
+    <body>
+        <br>
+        <div class="row">
+            <div class="col-8 offset-2">
+                <b>
+                    <h3>Create a new Listing</h3>
+                </b>
+                <form action="/listings" method="post" novalidate class="needs-validation"
+                    enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title :</label>
+                        <input type="text" name="listing[title]" class="form-control" placeholder="Add a catchy title"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description :</label>
+                        <textarea name="listing[description]" class="form-control" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Upload Image :</label>
+                        <input type="file" name="listing[image]" class="form-control" required>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3 col-md-4">
+                            <label for="price" class="form-label">Price :</label>
+                            <input required type="number" name="listing[price]" class="form-control" placeholder="2000">
+                        </div>
+                        <div class="mb-3 col-md-8">
+                            <label for="country" class="form-label">Country :</label>
+                            <input required type="text" name="listing[country]" class="form-control"
+                                placeholder="India">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Location :</label>
+                        <input type="text" required name="listing[location]" class="form-control"
+                            placeholder="Digapahandi, Ganjam">
+                    </div>
+                    <button class="btn btn-dark add-btn">Add</button>
+                    <br><br>
+                </form>
+            </div>
+        </div>
+    </body>
