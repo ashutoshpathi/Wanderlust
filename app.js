@@ -23,8 +23,6 @@ const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 const { error } = require("console");
 
-
-
 const dbURL = process.env.ATLASDB_URL
 
 main()
@@ -70,11 +68,10 @@ const sessionOptions = {
   },
 };
 
-// app.get("/", (req, res) => {
-//   res.send("Hi, I am root");
-// });
-
-
+// ✅ Added root route
+app.get("/", (req, res) => {
+  res.render("home");
+});
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -112,23 +109,20 @@ const validateReview = (req, res, next) => {
 //   res.send(registeredUser);
 // });
 
-// 404 handler
-// app.all("*", (req, res, next) => {
-//   next(new ExpressError(404, "Page not found"));
-// });
+// ✅ Uncommented 404 handler
+app.all("*", (req, res, next) => {
+  next(new ExpressError(404, "Page not found"));
+});
 
 // Routes
-
-
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 
-
-// Error handler
+// ✅ Fixed error render path
 app.use((err, req, res, next) => {
   const { statusCode = 500, message = "Something went wrong!!!" } = err;
-  res.status(statusCode).render("./listings/error.ejs", { message });
+  res.status(statusCode).render("listings/error", { message });
 });
 
 // Server
